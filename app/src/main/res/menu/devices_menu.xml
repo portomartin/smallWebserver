@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/btnAbout"
+        android:icon="@drawable/ic_baseline_help_24"
+        android:title="About"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/btnShare"
+        android:icon="@drawable/ic_baseline_share_24"
+        android:title="Share"
+        app:showAsAction="always" />
+
+</menu>
