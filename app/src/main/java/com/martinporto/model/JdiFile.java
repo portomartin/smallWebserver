@@ -1,6 +1,11 @@
 package com.martinporto.model;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import timber.log.Timber;
 
 public class JdiFile {
 	
@@ -47,6 +52,48 @@ public class JdiFile {
 		
 		File f = new File(dirPath);
 		f.delete();
+	}
+	
+	public static String getTextContent(String fileName) {
+		
+		String tContents = null;
+		try {
+			
+			InputStream stream = new FileInputStream(fileName);
+			
+			int size = stream.available();
+			byte[] buffer = new byte[size];
+			stream.read(buffer);
+			stream.close();
+			tContents = new String(buffer);
+			if (tContents.startsWith("\uFEFF")) {
+				tContents = tContents.substring(1);
+			}
+			
+		} catch (IOException e) {
+			Timber.d("Fail %s", e.toString());
+		}
+		
+		String fl = tContents.substring(0, 1);
+		if (fl.equals("?")) {
+			tContents = tContents.substring(1);
+		}
+		
+		return tContents;
+	}
+	
+	public static InputStream getImageContent(String fileName) {
+		
+		InputStream stream;
+		
+		try {
+			stream = new FileInputStream(fileName);
+			return stream;
+		} catch (IOException e) {
+			Timber.d("Fail %s", e.toString());
+		}
+		
+		return null;
 	}
 	
 	private void recursiveFileSizer(String dirPath) {

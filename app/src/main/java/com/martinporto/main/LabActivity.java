@@ -1,7 +1,6 @@
 package com.martinporto.main;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,17 +28,15 @@ import com.martinporto.App;
 import com.martinporto.model.JdiActivityLog;
 import com.martinporto.model.JdiDatabase;
 import com.martinporto.model.JdiPermissions;
-import com.martinporto.model.JdiWebServer;
-import com.martinporto.smallwebserver.AboutDialog;
-import com.martinporto.smallwebserver.ConfigDialog;
+import com.martinporto.model.webserver.Server;
+import com.martinporto.model.webserver.ServerRequest;
 import com.martinporto.smallwebserver.R;
-import com.martinporto.smallwebserver.SharingDialog;
 
 import java.util.ArrayList;
 
 import timber.log.Timber;
 
-public class LabActivity extends AppCompatActivity implements JdiWebServer.OnEventListener {
+public class LabActivity extends AppCompatActivity implements Server.OnEventListener {
 	
 	LifecycleOwner context;
 	Context context1;
@@ -213,7 +210,7 @@ public class LabActivity extends AppCompatActivity implements JdiWebServer.OnEve
 	}
 	
 	@Override
-	public void OnRequestIncoming(JdiWebServer.Request request) {
+	public void OnRequestIncoming(ServerRequest request) {
 		
 		JdiActivityLog.get().addLog(request.getInfo());
 		JdiDatabase.get().addNewLog(request.toString());
@@ -222,7 +219,6 @@ public class LabActivity extends AppCompatActivity implements JdiWebServer.OnEve
 	@Override
 	public void OnStop() {
 		Timber.d("STOP");
-		
 	}
 	
 	@Override

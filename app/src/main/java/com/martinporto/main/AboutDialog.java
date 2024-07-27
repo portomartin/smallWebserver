@@ -1,4 +1,4 @@
-package com.martinporto.smallwebserver;
+package com.martinporto.main;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
+
+import com.martinporto.smallwebserver.R;
 
 public class AboutDialog extends DialogFragment {
 	

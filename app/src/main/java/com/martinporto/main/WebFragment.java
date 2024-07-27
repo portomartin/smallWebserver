@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.martinporto.App;
-import com.martinporto.model.JdiWebServer;
+import com.martinporto.model.webserver.WebAppInterface;
 import com.martinporto.smallwebserver.R;
 
 public class WebFragment extends Fragment {
@@ -42,7 +42,7 @@ public class WebFragment extends Fragment {
 			WebView.setWebContentsDebuggingEnabled(true);
 		}
 		
-		webview.addJavascriptInterface(new JdiWebServer.WebAppInterface(App.getContext()), "Android");
+		webview.addJavascriptInterface(new WebAppInterface(App.getContext()), "Android");
 		WebSettings webSettings = webview.getSettings();
 		webSettings.setUseWideViewPort(true);
 		webSettings.setLoadWithOverviewMode(true);

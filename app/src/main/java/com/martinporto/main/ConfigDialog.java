@@ -1,4 +1,4 @@
-package com.martinporto.smallwebserver;
+package com.martinporto.main;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -11,12 +11,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
@@ -24,11 +21,11 @@ import androidx.fragment.app.DialogFragment;
 import com.martinporto.App;
 import com.martinporto.model.JdiDatabase;
 import com.martinporto.model.JdiToast;
-import com.martinporto.model.JdiWebServer;
+import com.martinporto.model.webserver.Server;
 import com.martinporto.model.JdiZip;
+import com.martinporto.smallwebserver.R;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import timber.log.Timber;
 
@@ -107,17 +104,15 @@ public class ConfigDialog extends DialogFragment {
 		String current = "The entire site must be contained in a valid zip file. \nSelect it from your device, wait the unziping task, and the new site will be running.";
 		txtWebSiteInfo.setText(current);
 		
-		String source = JdiWebServer.getWwwRootPath() + "/";
 		App app = (App) getActivity().getApplicationContext();
-		app.getJdiWebServer().getDirectoryCount(source).observe(getActivity(),
+		app.getJdiWebServer().getDirectoryCount().observe(getActivity(),
 			totalFiles -> {
-				txtWebSiteInfo.setText(String.format("%s Actually have %s files ", txtWebSiteInfo.getText().toString(), totalFiles.toString()));
-				
-				
+				txtWebSiteInfo.setText(
+					String.format("%s Actually have %s files ", txtWebSiteInfo.getText().toString(), totalFiles.toString()));
 			}
 		);
 		
-		app.getJdiWebServer().getDirectorySize(source).observe(getActivity(),
+		app.getJdiWebServer().getDirectorySize().observe(getActivity(),
 			totalSize -> txtWebSiteInfo.setText(String.format("%s and %s bytes ", txtWebSiteInfo.getText().toString(), totalSize.toString())));
 		
 		return builder.create();
@@ -196,7 +191,7 @@ public class ConfigDialog extends DialogFragment {
 				Uri zipData = data.getData();
 				String aux[] = zipData.getPath().split(":");
 				String source = "/storage/emulated/0/" + aux[1];
-				String destination = JdiWebServer.getWwwRootPath() + "/";
+				String destination = Server.getWwwRootPath() + "/";
 				
 				//ConfigDialog configDialog = new ConfigDialog();
 				//configDialog.setOnDismissListener(this);

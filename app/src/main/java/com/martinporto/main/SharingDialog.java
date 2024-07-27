@@ -1,4 +1,4 @@
-package com.martinporto.smallwebserver;
+package com.martinporto.main;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,9 +9,7 @@ import android.graphics.Color;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 
-import android.text.Html;
 import android.text.format.Formatter;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,8 +21,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-
-import timber.log.Timber;
+import com.martinporto.smallwebserver.R;
 
 public class SharingDialog extends DialogFragment {
 

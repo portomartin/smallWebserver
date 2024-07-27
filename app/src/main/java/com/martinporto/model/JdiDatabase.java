@@ -20,14 +20,17 @@ public class JdiDatabase extends SQLiteOpenHelper {
 	private static final int DB_VERSION = 1;
 	private static JdiDatabase ourInstance = new JdiDatabase();
 	MutableLiveData<Integer> stats;
+	SQLiteDatabase db;
 	
 	public JdiDatabase(Context context) {
 		super(App.getContext(), DB_NAME, null, DB_VERSION);
+		db = this.getWritableDatabase();
 	}
 	
 	public JdiDatabase() {
 		super(App.getContext(), DB_NAME, null, DB_VERSION);
 		stats = new MutableLiveData<>(0);
+		db = this.getWritableDatabase();
 	}
 	
 	public static JdiDatabase get() {
@@ -56,18 +59,18 @@ public class JdiDatabase extends SQLiteOpenHelper {
 	
 	public void addNewLog(String log) {
 		
-		SQLiteDatabase db = this.getWritableDatabase();
+		//SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put("log", log);
 		db.insert("logs", null, values);
-		db.close();
+		//db.close();
 		
 		updateStats();
 	}
 	
 	public void updateStats() {
 		
-		SQLiteDatabase db = this.getWritableDatabase();
+		//SQLiteDatabase db = this.getWritableDatabase();
 		Cursor c = db.rawQuery("SELECT * FROM vwStats", null);
 		
 		Integer total = 0;
@@ -81,7 +84,7 @@ public class JdiDatabase extends SQLiteOpenHelper {
 		stats.postValue(total);
 		
 		c.close();
-		db.close();
+		//db.close();
 	}
 	
 	public Integer resetStats() {
@@ -89,11 +92,11 @@ public class JdiDatabase extends SQLiteOpenHelper {
 		//Integer total = getStats();
 		Integer total = 0;
 		
-		SQLiteDatabase db = this.getWritableDatabase();
+		//SQLiteDatabase db = this.getWritableDatabase();
 		Cursor c = db.rawQuery("DELETE FROM logs", null);
 		c.moveToFirst();
 		c.close();
-		db.close();
+		//db.close();
 		
 		return total;
 		

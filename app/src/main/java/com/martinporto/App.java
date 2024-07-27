@@ -3,7 +3,7 @@ package com.martinporto;
 import android.app.Application;
 import android.content.Context;
 
-import com.martinporto.model.JdiWebServer;
+import com.martinporto.model.webserver.Server;
 
 import java.io.IOException;
 
@@ -14,9 +14,9 @@ public class App extends Application {
 	private static Context mContext;
 	private static String VERSION = "v1.00";
 	private static String NAME = "Small WebServer";
-	JdiWebServer jdiWebServer;
+	Server jdiWebServer;
 	
-	public JdiWebServer getJdiWebServer() {
+	public Server getJdiWebServer() {
 		return jdiWebServer;
 	}
 	
@@ -28,7 +28,7 @@ public class App extends Application {
 		
 		/* jdiWebServer */
 		try {
-			jdiWebServer = new JdiWebServer();
+			jdiWebServer = new Server();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
