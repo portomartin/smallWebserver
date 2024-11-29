@@ -40,6 +40,4 @@ public class ServerResponse {
 		
 		return buildResponse("{\"error\":\"Invalid image\"}");
 	}
-	
-
 }

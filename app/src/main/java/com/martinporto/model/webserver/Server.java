@@ -106,35 +106,6 @@ public class Server extends NanoHTTPD {
 		return path;
 	}
 	
-	public static Integer getTotalFiles() {
-		
-		File dir = new File(wwwRootPath);
-		if (dir.listFiles() == null) {
-			return 0;
-		}
-		
-		return dir.listFiles().length;
-	}
-	
-	public static long getFolderSize(File f) {
-		
-		long size = 0;
-		if (f.isDirectory()) {
-			for (File file : f.listFiles()) {
-				size += getFolderSize(file);
-			}
-		} else {
-			size = f.length();
-		}
-		return size;
-	}
-	
-	public static long getTotalSize() {
-		
-		File dir = new File(wwwRootPath);
-		return getFolderSize(dir);
-	}
-	
 	public Response staticServe(IHTTPSession session) {
 		
 		String fileName = session.getUri();
