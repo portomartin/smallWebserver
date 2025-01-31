@@ -1,9 +1,16 @@
 package com.martinporto.main;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
 import android.text.Html;
 import android.view.Display;
 import android.view.Menu;
@@ -19,7 +26,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
@@ -52,11 +61,14 @@ public class MainActivity extends AppCompatActivity implements Server.OnEventLis
 	Button btnSetup;
 	//JdiWebServer jdiWebServer;
 	WebView webview;
+
+	private static final int READ_WRITE_PERMISSION_REQUEST_CODE = 100;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
+		checkPermissions();
 		setContentView(R.layout.lab_activity);
 		context = this;
 		
@@ -147,6 +159,40 @@ public class MainActivity extends AppCompatActivity implements Server.OnEventLis
 			}
 		});
 		
+	}
+
+	private void checkPermissions() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			int readPermission = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+			int writePermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+			if (readPermission != PackageManager.PERMISSION_GRANTED || writePermission != PackageManager.PERMISSION_GRANTED) {
+				requestPermissions(
+						new String[]{
+								Manifest.permission.READ_EXTERNAL_STORAGE,
+								Manifest.permission.WRITE_EXTERNAL_STORAGE
+						}, READ_WRITE_PERMISSION_REQUEST_CODE
+				);
+			}
+		}
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q && !Environment.isExternalStorageManager()) {
+			Intent intent = new Intent(
+					Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
+					Uri.parse("package:" + getPackageName())
+			);
+			startActivity(intent);
+		}
+	}
+
+	@SuppressLint("MissingSuperCall")
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		if (requestCode == READ_WRITE_PERMISSION_REQUEST_CODE) {
+			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+				Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+			}
+		}
 	}
 	
 	public void webView() {
